@@ -36,13 +36,7 @@ class MainActivity : AppCompatActivity() {
             layoutManager = LinearLayoutManager(context)
         }
 
-        // Use the lifecycleScope to launch a coroutine when the activity is created
-        lifecycleScope.launchWhenCreated {
-            vm.drinks.collect {
-                // Collect items flow and update the adapter
-                adapter.items = it
-            }
-        }
+        adapter.items = vm.drinks
 
     }
 }

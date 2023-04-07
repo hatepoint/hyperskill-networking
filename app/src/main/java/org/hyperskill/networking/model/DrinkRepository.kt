@@ -8,9 +8,7 @@ class DrinkRepository {
 
     private var drinks = generateDrinks()
 
-    suspend fun getDrinks(): Flow<List<Drink>> = flow {
-        emit(drinks)
-    }
+    fun getDrinks(): List<Drink> = drinks
 
     private fun generateDrinks() = listOf(
         Drink(

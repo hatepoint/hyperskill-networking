@@ -10,17 +10,10 @@ import org.hyperskill.networking.model.models.Drink
 
 class MainViewModel(repository: DrinkRepository) : ViewModel() {
 
-    // Declare private and public variables
-    private val _drinks = MutableStateFlow<List<Drink>>(emptyList())
-    val drinks: StateFlow<List<Drink>> = _drinks
+    var drinks: List<Drink> = emptyList()
 
     init {
-        viewModelScope.launch {
-            // Collect the drinks flow from the repository and update the mutable state flow
-            repository.getDrinks().collect {
-                _drinks.value = it
-            }
-        }
+        drinks = repository.getDrinks()
     }
 
 }
