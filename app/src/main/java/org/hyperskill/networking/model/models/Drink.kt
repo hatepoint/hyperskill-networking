@@ -11,5 +11,3 @@ class Drink(
     val name: String,
     val type: String
 )
-
-object DrinkItemListSerializer : JsonTransformingSerializer<List<Drink>>(ListSerializer(Drink.serializer()))

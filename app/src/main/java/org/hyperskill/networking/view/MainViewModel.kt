@@ -2,35 +2,34 @@ package org.hyperskill.networking.view
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
-import org.hyperskill.networking.model.DrinkResponse
-import org.hyperskill.networking.model.DrinkRepository
 import org.hyperskill.networking.model.models.Drink
+import org.hyperskill.networking.model.retrofit.RetrofitClient
 
-class MainViewModel(repository: DrinkRepository) : ViewModel() {
+class MainViewModel: ViewModel() {
 
     // Declare private and public variables
+    private val retrofitClient = RetrofitClient.retrofitClient
     private val _uiState = MutableStateFlow<MainState>(MainState.Loading)
     val uiState: StateFlow<MainState> = _uiState
 
-    private fun mapToMainState(drinkResponse: DrinkResponse): MainState {
-        return when (drinkResponse) {
-            is DrinkResponse.Success -> MainState.Success(drinkResponse.drinks)
-            is DrinkResponse.Error -> MainState.Error(drinkResponse.error)
-            DrinkResponse.Empty -> MainState.Loading
+
+    private suspend fun getDrinks(): Flow<MainState> = flow {
+        val response = retrofitClient.getDrinks()
+        if (response.isSuccessful) {
+            emit(MainState.Success(response.body()!!))
+        } else {
+            emit(MainState.Error(response.message()))
         }
     }
-
-
     init {
         viewModelScope.launch {
             _uiState.value = MainState.Loading
-            repository.getDrinks().map {
-                mapToMainState(it)
-            }.collect {
+            getDrinks().collect {
                 _uiState.value = it
             }
         }
