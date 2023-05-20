@@ -1,19 +1,57 @@
 package org.hyperskill.networking.view
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
-import org.hyperskill.networking.model.DrinkRepository
 import org.hyperskill.networking.model.models.Drink
 
-class MainViewModel(repository: DrinkRepository) : ViewModel() {
+class MainViewModel : ViewModel() {
 
     var drinks: List<Drink> = emptyList()
 
     init {
-        drinks = repository.getDrinks()
+        drinks = listOf(
+            Drink(
+                name = "Cappuccino",
+                image = "",
+                id = 0,
+                type = "Coffee"
+            ),
+            Drink(
+                name = "Latte",
+                image = "",
+                id = 1,
+                type = "Coffee"
+            ),
+            Drink(
+                name = "Espresso",
+                image = "",
+                id = 2,
+                type = "Coffee"
+            ),
+            Drink(
+                name = "Americano",
+                image = "",
+                id = 3,
+                type = "Coffee"
+            ),
+            Drink(
+                name = "Mocha",
+                image = "",
+                id = 4,
+                type = "Coffee"
+            ),
+            Drink(
+                name = "Macchiato",
+                image = "",
+                id = 5,
+                type = "Coffee"
+            ),
+            Drink(
+                name = "Flat White",
+                image = "",
+                id = 6,
+                type = "Coffee"
+            )
+        )
     }
 
 }
